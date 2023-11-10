@@ -1,4 +1,4 @@
-# Capstone Project - Reac - Chat - App
+# Capstone Project - Reac - Chat - App - Course:  FS999 Full Stack Development - Marcel Alejandro Rubin Perez
 
 # This application is a Chat platform (React - Socket - Vite - JSX)
 
