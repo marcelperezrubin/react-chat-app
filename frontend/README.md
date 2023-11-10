@@ -1,8 +1,11 @@
-# React + Vite
+# Capstone Project - Reac - Chat - App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# This application is a Chat platform (React - Socket - Vite - JSX)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Instructions for use, open a terminal(react-chat-app folder) and write npm run dev for start the server and we must open a terminal from the frontend folder (open integrated terminal) and run npm run dev,
+
+# You will be redirected to "http://localhost:5173/", you can open other browser windows and paste the link: "http://localhost:5173/" To create multiple users, each user will have an id, the main one will have the user "me"
+
+# Enjoy
+

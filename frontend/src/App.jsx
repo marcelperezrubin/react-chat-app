@@ -47,7 +47,7 @@ function App() {
 
       <ul className="mt-4 w-full md:w-1/2 lg:w-1/3">
         {messages.map((message, i) => (
-          <li key={i}>
+          <li key={i} className='my-2 p-2 table text-sm rounded-md bg-sky-600'>
             {message.from}:{message.body}
           </li>
         ))}
