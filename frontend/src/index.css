@@ -15,6 +15,6 @@
 }
 
 .btn:hover {
-  background-color: #4CAF50; /* Puedes cambiar el color a tu gusto */
-  color: #ffffff; /* Cambia el color del texto para que contraste */
+  background-color: #4CAF50;
+  color: #ffffff; 
 }

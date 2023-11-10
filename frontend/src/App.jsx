@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import { useState, useEffect } from 'react';
+import './App.css'; // Importa tu archivo de estilos Tailwind CSS
 
 const socket = io("/")
 
@@ -14,13 +15,12 @@ function App() {
       from: 'Me'
     }
 
-    setMessages([ ...messages, newMessage]);
+    setMessages([...messages, newMessage]);
     socket.emit('message', message);
   };
 
   useEffect(() => {
-    socket.on("message",
-      receiveMessage);
+    socket.on("message", receiveMessage);
 
     return () => {
       socket.off("message", receiveMessage);
@@ -28,36 +28,32 @@ function App() {
   }, []);
 
   const receiveMessage = (message) =>
-   setMessages((state) => [...state, message]);
+    setMessages((state) => [...state, message]);
 
   return (
-    <div className="h-screen bg-zinc-800 text-white flex item-center
-     justify-center">
+    <div className="min-h-screen bg-zinc-800 text-white flex flex-col items-center justify-center">
+      <form onSubmit={handleSubmit} className='bg-zinc-900 p-10 w-full md:w-1/2 lg:w-1/3'>
+        <h1 className='text-2xl font-bold my-2'> Chat React App</h1>
+        <input
+          type="text"
+          placeholder='Write your message...'
+          className="border-2 border-zinc-500 p-2 w-full text-black"
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button className='btn mt-2 w-full md:w-auto'>
+          Send
+        </button>
+      </form>
 
-    <form onSubmit={handleSubmit} className='bg-zinc-900 p-10'>
-      <h1 className='text-2xl font-bold my-2'> Chat React App</h1>
-      <input type="text" placeholder='Write your message...'
-      className="border-2 border-zinc-500 p-2 w-full text-black" 
-      onChange={(e) => setMessage(e.target.value)}
-      />
-      
-      <button className='btn'>
-        Send
-      </button>
-    </form>
-
-    <ul>
-      {
-        messages.map((message, i) => (
+      <ul className="mt-4 w-full md:w-1/2 lg:w-1/3">
+        {messages.map((message, i) => (
           <li key={i}>
             {message.from}:{message.body}
-            </li>
-        ))
-      }
-    </ul>
-
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default App
+export default App;
