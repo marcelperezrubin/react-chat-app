@@ -7,5 +7,7 @@
 
 # You will be redirected to "http://localhost:5173/", you can open other browser windows and paste the link: "http://localhost:5173/" To create multiple users, each user will have an id, the main one will have the user "me"
 
+# The app is connected an Api from "openweathermap.org" to know the Weather I put London but you can change
+
 # Enjoy
 

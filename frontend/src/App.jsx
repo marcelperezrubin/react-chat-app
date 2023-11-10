@@ -1,12 +1,14 @@
 import io from 'socket.io-client';
 import { useState, useEffect } from 'react';
-import './App.css'; // Importa tu archivo de estilos Tailwind CSS
+import axios from 'axios';
+import './App.css';
 
-const socket = io("/")
+const socket = io("/");
 
 function App() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [weather, setWeather] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,10 +24,41 @@ function App() {
   useEffect(() => {
     socket.on("message", receiveMessage);
 
+    socket.on('connect', () => {
+      // Llamada a la función para obtener el pronóstico del tiempo
+      obtenerPronosticoCiudad("London");  // aqui podemos cambiar "London" por la ciudad que deseamos
+    });
+
     return () => {
       socket.off("message", receiveMessage);
-    }
+    };
   }, []);
+
+  // Función para obtener el pronóstico del tiempo
+  const obtenerPronosticoCiudad = async (ciudad) => {
+    try {
+      const apiKey = 'd853548071325aa0a422295f3d66d43e';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}`;
+
+      const respuesta = await axios.get(url);
+      const temperaturaCelsius = respuesta.data.main.temp - 273.15;
+      const temperaturaFahrenheit = (temperaturaCelsius * 9/5) + 32;
+
+      const pronostico = {
+        ...respuesta.data,
+        main: {
+          ...respuesta.data.main,
+          tempCelsius: temperaturaCelsius.toFixed(2),
+          tempFahrenheit: temperaturaFahrenheit.toFixed(2),
+        },
+      };
+
+      setWeather(pronostico);
+    } catch (error) {
+      console.error('Error al obtener el pronóstico del tiempo:', error.message);
+      setWeather(null);
+    }
+  };
 
   const receiveMessage = (message) =>
     setMessages((state) => [...state, message]);
@@ -52,6 +85,14 @@ function App() {
           </li>
         ))}
       </ul>
+
+      {weather && (
+        <div className="mt-4">
+          <h2 className="text-xl font-bold">Weather in {weather.name}</h2>
+          <p>{weather.weather[0].description}</p>
+          <p>Temperature: {weather.main.tempCelsius} °C / {weather.main.tempFahrenheit} °F</p>
+        </div>
+      )}
     </div>
   );
 }
