@@ -1,9 +1,9 @@
+import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
-import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const socket = io("/");
+const socket = io("http://127.0.0.1:5000");
 
 function App() {
   const [message, setMessage] = useState('');
@@ -25,8 +25,7 @@ function App() {
     socket.on("message", receiveMessage);
 
     socket.on('connect', () => {
-      // Llamada a la función para obtener el pronóstico del tiempo
-      obtenerPronosticoCiudad("London");  // aqui podemos cambiar "London" por la ciudad que deseamos
+      obtenerPronosticoCiudad("London");  // Cambia "London" por la ciudad que desees
     });
 
     return () => {
@@ -34,10 +33,9 @@ function App() {
     };
   }, []);
 
-  // Función para obtener el pronóstico del tiempo
   const obtenerPronosticoCiudad = async (ciudad) => {
     try {
-      const apiKey = 'd853548071325aa0a422295f3d66d43e';
+      const apiKey = '6ec49d1f15bd42e34e2a7b5849b11b92';
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}`;
 
       const respuesta = await axios.get(url);
@@ -81,7 +79,7 @@ function App() {
       <ul className="mt-4 w-full md:w-1/2 lg:w-1/3">
         {messages.map((message, i) => (
           <li key={i} className='my-2 p-2 table text-sm rounded-md bg-sky-600'>
-            {message.from}:{message.body}
+            {message.from}: {message.body}
           </li>
         ))}
       </ul>
