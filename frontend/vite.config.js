@@ -14,7 +14,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['react/jsx-runtime'],
+      external: ['react', 'react-dom'],
     },
   },
   base: '/react-chat-app/frontend/dist/',
