@@ -12,5 +12,10 @@ export default defineConfig({
       },
     },
   },
-  base: '/react-chat-app/frontend/dist/', // Ajusta esto según tu configuración
+  build: {
+    rollupOptions: {
+      external: ['react/jsx-runtime'],
+    },
+  },
+  base: '/react-chat-app/frontend/dist/',
 });
