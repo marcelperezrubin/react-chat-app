@@ -2,13 +2,15 @@ import express from "express";
 import http from "http";
 import morgan from "morgan";
 import { Server as SocketServer } from "socket.io";
-import { resolve } from "path";
+import {dirname, join} from "path";
+import { fileURLToPath } from "url";
 
 import { PORT } from "./config.js";
 import cors from "cors";
 
 // Inicialización de Express y configuración de middlewares
 const app = express();
+const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
@@ -28,6 +30,9 @@ io.on("connection", (socket) => {
     });
   });
 });
+
+
+app.use(express.static(join(__dirname, '../frontend/dist')))
 
 // Inicio del servidor
 server.listen(PORT, () => {
