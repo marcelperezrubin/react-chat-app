@@ -6,7 +6,10 @@ import requests
 
 app = Flask(__name__, static_folder='frontend/dist')
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
+
+# Mantén un seguimiento de los nombres de usuario asignados
+user_count = 0
 
 # Manejar solicitudes de pronóstico del tiempo
 @app.route('/weather/<city>')
@@ -32,13 +35,18 @@ def serve_static(path):
 
 @socketio.on('connect')
 def handle_connect():
+    global user_count
     session_id = request.args.get('sessionId')
-    print(f"Cliente conectado: {session_id}")
+    user_count += 1
+    username = f'User{user_count}'
+    print(f"Cliente conectado: {username}, session_id: {session_id}")
+    emit('username_assigned', {'username': username})  # Envia el nombre de usuario al cliente
 
 @socketio.on('message')
 def handle_message(data):
     session_id = request.args.get('sessionId')
-    print(f"Mensaje recibido de {session_id}: {data}")
+    username = request.args.get('username', 'Unknown')  # Si no hay nombre de usuario, usa 'Unknown'
+    print(f"Mensaje recibido de {username} ({session_id}): {data}")
     emit('message', data, broadcast=True, include_self=False)
 
 if __name__ == '__main__':
