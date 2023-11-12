@@ -8,18 +8,6 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-
-
-
-# Resto del código...
-
-
-app = Flask(__name__)
-CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
-
-
-
 # Manejar solicitudes de pronóstico del tiempo
 @app.route('/weather/<city>')
 def obtener_pronostico_ciudad(city):
@@ -35,11 +23,13 @@ def obtener_pronostico_ciudad(city):
 
 @socketio.on('connect')
 def handle_connect():
-    print(f"Cliente conectado: {request.sid}")
+    session_id = request.args.get('sessionId')
+    print(f"Cliente conectado: {session_id}")
 
 @socketio.on('message')
 def handle_message(data):
-    print(f"Mensaje recibido: {data}")
+    session_id = request.args.get('sessionId')
+    print(f"Mensaje recibido de {session_id}: {data}")
     emit('message', data, broadcast=True, include_self=False)
 
 if __name__ == '__main__':
