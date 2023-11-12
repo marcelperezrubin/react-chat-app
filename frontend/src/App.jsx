@@ -42,7 +42,7 @@ function App() {
 
   const obtenerPronosticoCiudad = async (ciudad) => {
     try {
-      const apiKey = '6ec49d1f15bd42e34e2a7b5849b11b92';
+      const apiKey = '0c298c4afbce0f6a66958ca577621fdb';
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}`;
 
       const respuesta = await axios.get(url);
