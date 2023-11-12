@@ -3,6 +3,8 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import './App.css';
 
+
+
 const socket = io("http://127.0.0.1:5000");
 
 function App() {
@@ -58,8 +60,11 @@ function App() {
     }
   };
 
-  const receiveMessage = (message) =>
-    setMessages((state) => [...state, message]);
+  
+
+    const receiveMessage = (message) => {
+      setMessages((state) => [...state, message]);
+    };
 
   return (
     <div className="min-h-screen bg-zinc-800 text-white flex flex-col items-center justify-center">
