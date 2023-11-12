@@ -6,8 +6,12 @@ import requests
 
 app = Flask(__name__, static_folder='frontend/dist')
 CORS(app, resources={r"/*": {"origins": "https://react-chat-capstone-project-5721959f643e.herokuapp.com"}})
-socketio = SocketIO(app)
-
+socketio = SocketIO(
+    app,
+    cors_allowed_origins="http://localhost:5173",
+    async_mode='eventlet',  # O 'threading' o 'gevent'
+    transports=['websocket', 'polling'],
+)
 
 # Mantén un seguimiento de los nombres de usuario asignados
 user_count = 0
