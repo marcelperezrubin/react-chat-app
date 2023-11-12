@@ -3,7 +3,8 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import './App.css';
 
-const socket = io("http://127.0.0.1:5000");
+const socket = io('https://react-chat-capstone-project-5721959f643e.herokuapp.com/');
+
 
 function App() {
   const [username, setUsername] = useState('');

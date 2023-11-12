@@ -1,12 +1,13 @@
 from flask import Flask, jsonify, request, send_from_directory
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_socketio import SocketIO, emit
 import os
 import requests
 
 app = Flask(__name__, static_folder='frontend/dist')
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
-socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
+CORS(app, resources={r"/*": {"origins": "https://react-chat-capstone-project-5721959f643e.herokuapp.com"}})
+socketio = SocketIO(app)
+
 
 # Mantén un seguimiento de los nombres de usuario asignados
 user_count = 0
