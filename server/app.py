@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 import os
 import requests
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='frontend/dist')
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -12,7 +12,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 @app.route('/weather/<city>')
 def obtener_pronostico_ciudad(city):
     try:
-        api_key = os.environ.get('OPENWEATHER_API_KEY')  # Usar variables de entorno para proteger claves
+        api_key = os.environ.get('OPENWEATHER_API_KEY')
         url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}'
 
         respuesta = requests.get(url).json()
@@ -20,6 +20,15 @@ def obtener_pronostico_ciudad(city):
     except Exception as error:
         print('Error al obtener el pronóstico del tiempo:', str(error))
         return jsonify({'error': 'Error al obtener el pronóstico del tiempo'}), 500
+
+# Ruta para servir archivos estáticos del frontend
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_static(path):
+    if path != '' and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 @socketio.on('connect')
 def handle_connect():
