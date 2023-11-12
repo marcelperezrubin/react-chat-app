@@ -3,31 +3,35 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import './App.css';
 
-
-
 const socket = io("http://127.0.0.1:5000");
 
 function App() {
+  const [username, setUsername] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [weather, setWeather] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     const newMessage = {
       body: message,
-      from: 'Me'
-    }
-
-    setMessages([...messages, newMessage]);
-    socket.emit('message', message);
+      from: "Me",
+    };
+    setMessages(state => [newMessage, ...state]);
+    setMessage("");
+    socket.emit("message", newMessage.body);
   };
 
   useEffect(() => {
     socket.on("message", receiveMessage);
 
     socket.on('connect', () => {
-      obtenerPronosticoCiudad("London");  // Cambia "London" por la ciudad que desees
+      socket.emit('get_username');  // Solicita un nombre de usuario al servidor
+      obtenerPronosticoCiudad("London");
+    });
+
+    socket.on('username_assigned', (data) => {
+      setUsername(data.username);  // Establece el nombre de usuario asignado
     });
 
     return () => {
@@ -60,11 +64,9 @@ function App() {
     }
   };
 
-  
-
-    const receiveMessage = (message) => {
-      setMessages((state) => [...state, message]);
-    };
+  const receiveMessage = (message) => {
+    setMessages((state) => [...state, message]);
+  };
 
   return (
     <div className="min-h-screen bg-zinc-800 text-white flex flex-col items-center justify-center">
